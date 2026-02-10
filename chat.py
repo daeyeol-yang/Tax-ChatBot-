@@ -1,7 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 
-from llm import get_ai_message
+from llm import get_ai_response
 
 
 
@@ -20,10 +20,6 @@ for message in st.session_state.message_list:
         st.write(message["content"])
 
 
-
-
-
-
 if user_question := st.chat_input(placeholder="소득세에 관련된 궁금한 내용들을 말씀해주세요!"):
     with st.chat_message("user"):
         st.write(user_question)
@@ -31,7 +27,7 @@ if user_question := st.chat_input(placeholder="소득세에 관련된 궁금한 
 
     with st.spinner("답변을 생성하는 중입니다."):
 
-        ai_message = get_ai_message(user_question)
+        ai_response = get_ai_response(user_question)
         with st.chat_message("ai"):
-            st.write(ai_message)
-        st.session_state.message_list.append({"role" : "AI" , "content" : ai_message})
+            ai_message = st.write_stream(ai_response)
+            st.session_state.message_list.append({"role" : "ai" , "content" : ai_message})
